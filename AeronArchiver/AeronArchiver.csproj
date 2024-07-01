@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<UserSecretsId>dotnet-AeronArchiver-f100ae45-0eae-48a1-9397-754e76a08752</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Aeron.Archiver" Version="1.40.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+	</ItemGroup>
+
+</Project>
