@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace AeronArchiver;
+namespace AeronSubscriber;
 
 public class Program
 {

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using Adaptive.Aeron;
-using Adaptive.Aeron.LogBuffer;
-using Adaptive.Agrona;
+using Adaptive.Archiver;
+using Adaptive.Archiver.Codecs;
 
 namespace AeronArchiver;
 
@@ -11,59 +9,37 @@ public class AeronArchiveService
 {
     private const string Channel = "aeron:ipc";
     private const int StreamId = 1001;
-    private const string ArchiveDirectory = "archive";
+    private const string ControlRequestChannel = "aeron:udp?endpoint=localhost:8010";
+    private const string ControlResponseChannel = "aeron:udp?endpoint=localhost:8020";
 
     public void Start()
     {
-        Directory.CreateDirectory(ArchiveDirectory);
-
-        var ctx = new Aeron.Context()
-            .AeronDirectoryName(Aeron.Context.GetAeronDirectoryName())
-            .AvailableImageHandler(OnAvailableImage)
-            .UnavailableImageHandler(OnUnavailableImage);
-
+        using var ctx = new Aeron.Context();
         using var aeron = Aeron.Connect(ctx);
+        var archiveContext = new AeronArchive.Context()
+            .ControlRequestChannel(ControlRequestChannel)
+            .ControlResponseChannel(ControlResponseChannel);
+        using var archive = AeronArchive.Connect(archiveContext);
+
+        archive.StartRecording(Channel, StreamId, SourceLocation.LOCAL);
+
         using var subscription = aeron.AddSubscription(Channel, StreamId);
 
-        Console.WriteLine("Listening for messages...");
-
-        var fragmentHandler = new FragmentHandler(FragmentHandler);
+        var fragmentAssembler = new FragmentAssembler((buffer, offset, length, header) =>
+        {
+            var message = buffer.GetStringWithoutLengthAscii(offset, length);
+            Console.WriteLine("Received: " + message);
+        });
 
         while (true)
         {
-            int fragmentsRead = subscription.Poll(fragmentHandler, 10);
+            int fragmentsRead = subscription.Poll(fragmentAssembler, 10);
+
             if (fragmentsRead == 0)
             {
                 // Sleep or yield to prevent tight loop when no messages are available
                 System.Threading.Thread.Sleep(1);
             }
         }
-    }
-
-    private void FragmentHandler(IDirectBuffer buffer, int offset, int length, Header header)
-    {
-        byte[] data = new byte[length];
-        buffer.GetBytes(offset, data);
-
-        string message = Encoding.UTF8.GetString(data);
-        Console.WriteLine($"Received message: {message}");
-
-        ArchiveMessage(message);
-    }
-
-    private void ArchiveMessage(string message)
-    {
-        string filePath = Path.Combine(ArchiveDirectory, $"{Guid.NewGuid()}.txt");
-        File.WriteAllText(filePath, message);
-    }
-
-    private void OnAvailableImage(Image image)
-    {
-        Console.WriteLine($"Available image on {image.SourceIdentity}");
-    }
-
-    private void OnUnavailableImage(Image image)
-    {
-        Console.WriteLine($"Unavailable image on {image.SourceIdentity}");
     }
 }

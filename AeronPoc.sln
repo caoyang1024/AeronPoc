@@ -5,7 +5,9 @@ VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AeronPublisher", "AeronPublisher\AeronPublisher.csproj", "{A5466193-684B-4E26-9F57-811E01E87773}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AeronArchiver", "AeronArchiver\AeronArchiver.csproj", "{27315380-4625-4723-B7FB-515872D8BE20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AeronArchiver", "AeronArchiver\AeronArchiver.csproj", "{27315380-4625-4723-B7FB-515872D8BE20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AeronSubscriber", "AeronSubscriber\AeronSubscriber.csproj", "{78B79DE5-4024-4651-9F7B-F3D59277429D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{27315380-4625-4723-B7FB-515872D8BE20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27315380-4625-4723-B7FB-515872D8BE20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27315380-4625-4723-B7FB-515872D8BE20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78B79DE5-4024-4651-9F7B-F3D59277429D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78B79DE5-4024-4651-9F7B-F3D59277429D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78B79DE5-4024-4651-9F7B-F3D59277429D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78B79DE5-4024-4651-9F7B-F3D59277429D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
